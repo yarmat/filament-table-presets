@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Ymsoft\FilamentTablePresets\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentTablePresetsCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-table-presets';
 
     public $description = 'My command';
 
