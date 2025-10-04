@@ -13,7 +13,7 @@ use Ymsoft\FilamentTablePresets\Models\FilamentTablePreset;
 /**
  * @mixin Model
  */
-trait HasTablePresets
+trait HasFilamentTablePresets
 {
     public function filamentTablePresets(): BelongsToMany|MorphToMany
     {
