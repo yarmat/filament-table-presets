@@ -4,7 +4,6 @@ namespace Ymsoft\FilamentTablePresets;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Ymsoft\FilamentTablePresets\Commands\FilamentTablePresetsCommand;
 
 class FilamentTablePresetsServiceProvider extends PackageServiceProvider
 {
@@ -18,8 +17,6 @@ class FilamentTablePresetsServiceProvider extends PackageServiceProvider
         $package
             ->name('filament-table-presets')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_filament_table_presets_table')
-            ->hasCommand(FilamentTablePresetsCommand::class);
+            ->hasMigration('create_filament_table_presets_table');
     }
 }
