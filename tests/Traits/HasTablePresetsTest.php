@@ -10,6 +10,13 @@ use Ymsoft\FilamentTablePresets\Tests\TestCase;
 
 class HasTablePresetsTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        FilamentTablePreset::polymorphicUserRelationship(false);
+    }
+
     use DatabaseMigrations;
 
     /**
