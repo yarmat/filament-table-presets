@@ -12,9 +12,9 @@ return new class extends Migration {
             $table->string('resource_class');
 
             // If you want to use polymorphic relationships, uncomment the following line:
-            // $table->morphs('user');
+            // $table->morphs('owner');
             // and comment the following line
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
 
             $table->string('name');
             $table->text('description')->nullable();

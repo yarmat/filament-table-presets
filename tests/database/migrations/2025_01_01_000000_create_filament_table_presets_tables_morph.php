@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('resource_class');
 
             // Полиморфная связь с пользователем
-            $table->morphs('user');
+            $table->morphs('owner');
 
             $table->string('name');
             $table->text('description')->nullable();

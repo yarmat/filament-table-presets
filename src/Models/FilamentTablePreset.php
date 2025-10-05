@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use LogicException;
+use Throwable;
 
 /**
  * @property bool $public
- * @property mixed $user_id
+ * @property mixed $owner_id
  */
 class FilamentTablePreset extends Model
 {
@@ -34,8 +35,11 @@ class FilamentTablePreset extends Model
         return config('filament-table-presets.table_name', 'filament_table_presets');
     }
 
+    // # AI Assistant
+
+    // # AI Assistant
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function togglePublic(): void
     {
@@ -44,9 +48,18 @@ class FilamentTablePreset extends Model
             $this->public = ! $this->public;
 
             if ($wasPublic && ! $this->public) {
-                $ownerId = $this->user_id;
+                $relation = $this->users();
 
-                $this->users()->whereNotIn('user_id', [$ownerId])->detach();
+                $relation->newPivotStatement()
+                    ->when(method_exists($relation, 'getMorphType'), function ($q) use ($relation) {
+                        /** @phpstan-ignore-next-line */
+                        $q->where($relation->getMorphType(), $relation->getMorphClass());
+                    })
+                    ->where($relation->getForeignPivotKeyName(), $this->getKey())
+                    ->where($relation->getRelatedPivotKeyName(), '!=', $this->owner_id)
+                    ->delete();
+
+                $this->unsetRelation('users');
             }
 
             $this->save();
@@ -56,7 +69,7 @@ class FilamentTablePreset extends Model
     public function owner(): BelongsTo
     {
         if (static::hasPolymorphicUserRelationship()) {
-            return $this->morphTo('user', 'user_type', 'user_id', 'id');
+            return $this->morphTo();
         }
 
         /** @var ?Authenticatable $authenticatable */
@@ -64,7 +77,7 @@ class FilamentTablePreset extends Model
 
         if ($authenticatable) {
             /** @phpstan-ignore-next-line */
-            return $this->belongsTo($authenticatable::class, 'user_id');
+            return $this->belongsTo($authenticatable::class);
         }
 
         $userClass = app()->getNamespace().'Models\\User';
@@ -73,31 +86,43 @@ class FilamentTablePreset extends Model
             throw new LogicException('No ['.$userClass.'] model found. Please bind an authenticatable model to the [Illuminate\\Contracts\\Auth\\Authenticatable] interface in a service provider\'s [register()] method.');
         }
 
-        return $this->belongsTo($userClass, 'user_id');
+        return $this->belongsTo($userClass);
     }
 
     public function users(): MorphToMany|BelongsToMany
     {
         $pivotTable = config('filament-table-presets.pivot_table_name', 'filament_table_preset_user');
 
-        /** @var ?Authenticatable $authenticatable */
+        /** @var ?Model $authenticatable */
         $authenticatable = app(Authenticatable::class);
 
         if ($authenticatable) {
             $userClass = $authenticatable::class;
         } else {
             $userClass = app()->getNamespace().'Models\\User';
-
             if (! class_exists($userClass)) {
-                throw new LogicException('No ['.$userClass.'] model found. Please bind an authenticatable model to the [Illuminate\\Contracts\\Auth\\Authenticatable] interface in a service provider\'s [register()] method.');
+                throw new \LogicException(
+                    'No ['.$userClass.'] model found. Please bind an authenticatable model to the [Illuminate\\Contracts\\Auth\\Authenticatable] interface.'
+                );
             }
         }
 
         if (static::hasPolymorphicUserRelationship()) {
-            return $this->morphedByMany($userClass, 'user', $pivotTable, 'preset_id', 'user_id');
+            return $this->morphedByMany(
+                $userClass,
+                'user',
+                $pivotTable,
+                'preset_id',
+                'user_id'
+            )->withPivot(['sort', 'default', 'visible']);
         }
 
-        return $this->belongsToMany($userClass, $pivotTable, 'preset_id', 'user_id');
+        return $this->belongsToMany(
+            $userClass,
+            $pivotTable,
+            'preset_id',
+            'user_id'
+        )->withPivot(['sort', 'default', 'visible']);
     }
 
     public static function hasPolymorphicUserRelationship(): bool
