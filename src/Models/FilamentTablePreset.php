@@ -35,9 +35,6 @@ class FilamentTablePreset extends Model
         return config('filament-table-presets.table_name', 'filament_table_presets');
     }
 
-    // # AI Assistant
-
-    // # AI Assistant
     /**
      * @throws Throwable
      */
