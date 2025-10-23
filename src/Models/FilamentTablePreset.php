@@ -11,6 +11,14 @@ use LogicException;
 use Throwable;
 
 /**
+ * @property string $name
+ * @property ?string $description
+ * @property ?string $sort
+ * @property ?string $search
+ * @property ?array $columns
+ * @property ?array $filters
+ * @property string $panel
+ * @property string $resource_class
  * @property bool $public
  * @property mixed $owner_id
  */

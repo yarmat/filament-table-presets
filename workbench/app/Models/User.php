@@ -6,12 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Ymsoft\FilamentTablePresets\Traits\HasFilamentTablePresets;
+use Ymsoft\FilamentTablePresets\Traits\WithFilamentTablePresets;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasFilamentTablePresets, Notifiable;
+    use HasFactory, Notifiable, WithFilamentTablePresets;
 
     /**
      * The attributes that are mass assignable.

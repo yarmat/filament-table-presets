@@ -2,8 +2,10 @@
 
 namespace Ymsoft\FilamentTablePresets;
 
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Ymsoft\FilamentTablePresets\Livewire\FilamentTablePresets;
 
 class FilamentTablePresetsServiceProvider extends PackageServiceProvider
 {
@@ -16,7 +18,14 @@ class FilamentTablePresetsServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('filament-table-presets')
+            ->hasViews()
+            ->hasTranslations()
             ->hasConfigFile()
             ->hasMigration('create_filament_table_presets_table');
+    }
+
+    public function bootingPackage(): void
+    {
+        Livewire::component('filament-table-presets::livewire.filament-table-presets', FilamentTablePresets::class);
     }
 }

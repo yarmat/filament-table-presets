@@ -65,4 +65,56 @@ class FilamentTablePresetTogglePublicTest extends TestCase
         $otherPresets = $other->getResourceFilamentTablePresets($resourceClass);
         $this->assertCount(0, $otherPresets);
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function test_toggle_public_table_preset_changes_visibility(): void
+    {
+        $resourceClass = 'Workbenches\App\Filament\Resources\ProductResource';
+        $owner = User::factory()->create();
+
+        $preset = $this->makePublicPreset($owner, $resourceClass, 'test-preset');
+
+        $this->assertTrue($preset->public);
+
+        $owner->togglePublicTablePreset($preset);
+        $preset->refresh();
+
+        $this->assertFalse($preset->public);
+
+        $owner->togglePublicTablePreset($preset);
+        $preset->refresh();
+
+        $this->assertTrue($preset->public);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function test_toggle_public_table_preset_to_private_detaches_other_users(): void
+    {
+        $resourceClass = 'Workbenches\App\Filament\Resources\ProductResource';
+        $owner = User::factory()->create();
+        $other = User::factory()->create();
+
+        $preset = $this->makePublicPreset($owner, $resourceClass, 'shared-preset');
+
+        $other->attachTablePreset($preset);
+
+        $this->assertCount(1, $owner->getResourceFilamentTablePresets($resourceClass));
+        $this->assertCount(1, $other->getResourceFilamentTablePresets($resourceClass));
+
+        $owner->togglePublicTablePreset($preset);
+        $preset->refresh();
+
+        $this->assertFalse($preset->public);
+
+        $ownerPresets = $owner->getResourceFilamentTablePresets($resourceClass);
+        $this->assertCount(1, $ownerPresets);
+        $this->assertSame($preset->id, $ownerPresets->first()->id);
+
+        $otherPresets = $other->getResourceFilamentTablePresets($resourceClass);
+        $this->assertCount(0, $otherPresets);
+    }
 }

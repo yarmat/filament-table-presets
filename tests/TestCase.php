@@ -22,6 +22,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
+            \Livewire\LivewireServiceProvider::class,
             FilamentTablePresetsServiceProvider::class,
         ];
     }

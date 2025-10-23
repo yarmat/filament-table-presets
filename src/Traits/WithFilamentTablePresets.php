@@ -13,7 +13,7 @@ use Ymsoft\FilamentTablePresets\Models\FilamentTablePreset;
 /**
  * @mixin Model
  */
-trait HasFilamentTablePresets
+trait WithFilamentTablePresets
 {
     public function filamentTablePresets(): BelongsToMany|MorphToMany
     {
@@ -26,6 +26,15 @@ trait HasFilamentTablePresets
 
         return $this->belongsToMany(FilamentTablePreset::class, $pivotTable, 'user_id', 'preset_id')
             ->withPivot(['sort', 'default', 'visible']);
+    }
+
+    public function getVisibleResourceFilamentTablePresets(string $resourceClass)
+    {
+        return $this->filamentTablePresets()
+            ->where('resource_class', $resourceClass)
+            ->wherePivot('visible', true)
+            ->orderByPivot('sort')
+            ->get();
     }
 
     public function getResourceFilamentTablePresets(string $resourceClass)
@@ -65,11 +74,12 @@ trait HasFilamentTablePresets
     /**
      * @throws Throwable
      */
-    public function deleteTablePreset(FilamentTablePreset $preset): void
+    public function deleteTablePreset(FilamentTablePreset $preset)
     {
-        DB::transaction(function () use ($preset) {
+        return DB::transaction(function () use ($preset) {
             $this->detachTablePreset($preset);
-            $preset->delete();
+
+            return $preset->delete();
         });
     }
 
@@ -114,7 +124,7 @@ trait HasFilamentTablePresets
             $sort = 1;
             /** @var FilamentTablePreset $existingPreset */
             foreach ($presets as $existingPreset) {
-                $relation->updateExistingPivot($existingPreset->id, ['sort' => $sort]);
+                $relation->updateExistingPivot($existingPreset->getKey(), ['sort' => $sort]);
                 $sort++;
             }
         });
@@ -171,6 +181,32 @@ trait HasFilamentTablePresets
     /**
      * @throws Throwable
      */
+    public function togglePublicTablePreset(FilamentTablePreset $preset): void
+    {
+        DB::transaction(function () use ($preset) {
+            if (! $preset->public) {
+                $preset->public = true;
+            } else {
+                $preset->public = false;
+
+                $users = $preset->users()->get();
+
+                foreach ($users as $user) {
+                    if ($preset->owner()->is($user)) {
+                        continue;
+                    }
+
+                    $user->detachTablePreset($preset);
+                }
+            }
+
+            $preset->save();
+        });
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function updateTablePresetSort(FilamentTablePreset $preset, int $newSort): void
     {
         DB::transaction(function () use ($preset, $newSort) {
@@ -184,13 +220,13 @@ trait HasFilamentTablePresets
             $sort = 1;
             /** @var FilamentTablePreset $existingPreset */
             foreach ($presets as $existingPreset) {
-                if ($existingPreset->id === $preset->id) {
+                if ($existingPreset->getKey() === $preset->getKey()) {
                     continue;
                 }
                 if ($sort === $newSort) {
                     $sort++;
                 }
-                $relation->updateExistingPivot($existingPreset->id, ['sort' => $sort]);
+                $relation->updateExistingPivot($existingPreset->getKey(), ['sort' => $sort]);
                 $sort++;
             }
 
