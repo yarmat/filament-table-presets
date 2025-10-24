@@ -15,7 +15,6 @@
             "role": "Developer"
         }
     ],
-    "version": "dev-main",
     "require": {
         "php": "^8.2",
         "filament/filament": "^4.0",
