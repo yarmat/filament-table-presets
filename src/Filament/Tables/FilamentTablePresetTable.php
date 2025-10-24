@@ -51,7 +51,7 @@ class FilamentTablePresetTable
                         auth()->user()->toggleDefaultTablePreset($record);
                     }),
             ])
-            ->reorderable('sort')
+            ->reorderable(config('filament-table-presets.pivot_table_name').'.sort')
             ->filters([
                 TernaryFilter::make('public')
                     ->label(__('filament-table-presets::table-preset.public')),

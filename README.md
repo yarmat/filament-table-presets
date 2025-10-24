@@ -277,7 +277,7 @@ The plugin comes with built-in English translations. To add your own language:
 **Step 1:** Publish the language files (optional):
 
 ```bash
-php artisan vendor:publish --tag="filament-table-presets-lang"
+php artisan vendor:publish --tag="filament-table-presets-translations"
 ```
 
 **Step 2:** Create a new language file in your application:
