@@ -6,6 +6,7 @@ use Filament\Contracts\Plugin;
 use Filament\Facades\Filament;
 use Filament\Panel;
 use Gate;
+use Ymsoft\FilamentTablePresets\Filament\Tables\FilamentTablePresetTable;
 use Ymsoft\FilamentTablePresets\Models\FilamentTablePreset;
 use Ymsoft\FilamentTablePresets\Policies\FilamentTablePresetPolicy;
 
@@ -13,14 +14,30 @@ class FilamentTablePresetPlugin implements Plugin
 {
     protected bool $hasPolymorphicUserRelationship = false;
 
+    protected ?string $modalTableClass = null;
+
     public function getId(): string
     {
         return 'filament-table-presets';
     }
 
-    public function hasPolymorphicUserRelationship(bool $condition = true): void
+    public function hasPolymorphicUserRelationship(bool $condition = true): static
     {
         $this->hasPolymorphicUserRelationship = $condition;
+
+        return $this;
+    }
+
+    public function modalTable(string $tableClass): static
+    {
+        $this->modalTableClass = $tableClass;
+
+        return $this;
+    }
+
+    public function getModalTableClass(): string
+    {
+        return $this->modalTableClass ?? FilamentTablePresetTable::class;
     }
 
     public function register(Panel $panel): void {}

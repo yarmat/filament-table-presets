@@ -4,6 +4,7 @@ namespace Ymsoft\FilamentTablePresets\Livewire;
 
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
+use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -13,7 +14,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 use Throwable;
-use Ymsoft\FilamentTablePresets\Filament\Tables\FilamentTablePresetTable;
+use Ymsoft\FilamentTablePresets\FilamentTablePresetPlugin;
 use Ymsoft\FilamentTablePresets\Models\FilamentTablePreset;
 
 class FilamentTablePresets extends Component implements HasActions, HasForms, HasTable
@@ -28,7 +29,9 @@ class FilamentTablePresets extends Component implements HasActions, HasForms, Ha
 
     public function table(Table $table): Table
     {
-        return FilamentTablePresetTable::configure($table)
+        $tableClass = $this->getTableClass();
+
+        return $tableClass::configure($table)
             ->query(function () {
                 return auth()
                     ->user()
@@ -36,6 +39,17 @@ class FilamentTablePresets extends Component implements HasActions, HasForms, Ha
                     ->orderByPivot('sort')
                     ->where('resource_class', $this->resourceClass);
             });
+    }
+
+    /**
+     * @return class-string
+     */
+    protected function getTableClass(): string
+    {
+        /** @var FilamentTablePresetPlugin $plugin */
+        $plugin = Filament::getCurrentPanel()->getPlugin('filament-table-presets');
+
+        return $plugin->getModalTableClass();
     }
 
     public function isPresetSelected(FilamentTablePreset $preset): bool
