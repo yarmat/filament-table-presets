@@ -97,7 +97,7 @@ Schema::create('filament_table_preset_user', function (Blueprint $table) {
 
     // Uncomment for polymorphic relationships:
     $table->morphs('user');
-    $table->unique(['preset_id', 'user_type', 'user_id']);
+
     // Comment out the regular foreign key:
     // $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
@@ -118,15 +118,15 @@ FilamentTablePresetPlugin::make()
 
 ### User Model Trait
 
-Add the `HasFilamentTablePresets` trait to your User model:
+Add the `WithFilamentTablePresets` trait to your User model:
 
 ```php
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Ymsoft\FilamentTablePresets\Traits\HasFilamentTablePresets;
+use Ymsoft\FilamentTablePresets\Traits\WithFilamentTablePresets;
 
 class User extends Authenticatable
 {
-    use HasFilamentTablePresets;
+    use WithFilamentTablePresets;
 
     // ...
 }

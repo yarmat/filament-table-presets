@@ -36,7 +36,7 @@ class CreateTablePresetAction extends Action
                 $preset = new FilamentTablePreset;
                 $preset->name = $data['name'];
                 $preset->description = $data['description'];
-                $preset->resource_class = self::class;
+                $preset->resource_class = $livewire->getResourceClassName();
                 $preset->public = false;
                 $preset->panel = Filament::getCurrentPanel()->getId();
                 $livewire->setTablePresetValues($preset);

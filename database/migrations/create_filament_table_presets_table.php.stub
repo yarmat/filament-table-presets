@@ -13,8 +13,10 @@ return new class extends Migration {
 
             // If you want to use polymorphic relationships, uncomment the following line:
             // $table->morphs('owner');
+            // $table->index(['owner_id', 'owner_type', 'resource_class']);
             // and comment the following line
             $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
+            $table->index(['owner_id', 'resource_class']);
 
             $table->string('name');
             $table->text('description')->nullable();
@@ -27,8 +29,6 @@ return new class extends Migration {
             $table->string('panel')->index();
 
             $table->timestamps();
-
-            $table->index(['user_id', 'resource_class']);
         });
 
         Schema::create('filament_table_preset_user', function (Blueprint $table) {
