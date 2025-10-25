@@ -27,6 +27,7 @@ A powerful Filament plugin that allows users to save, manage, and share table co
 - [Authorization](#authorization)
 - [Database Structure](#database-structure)
 - [Translations](#translations)
+- [Screenshots](#screenshots)
 - [Testing](#testing)
 - [Security Vulnerabilities](#security-vulnerabilities)
 - [Credits](#credits)
@@ -153,12 +154,16 @@ This allows presets to be associated with different user models (e.g., `App\Mode
 
 ### Custom Modal Table
 
-Customize the table displayed in the preset management modal:
+The preset management modal uses a fully-featured Filament table with all the benefits and flexibility you'd expect. This means you can easily customize it to fit your needs—add custom columns, filters, actions, bulk actions, or modify the layout as you would with any Filament table.
+
+To customize the table displayed in the preset management modal, simply pass your custom table class:
 
 ```php
 FilamentTablePresetPlugin::make()
     ->modalTable(MyCustomTableClass::class)
 ```
+
+The table leverages all of Filament's table capabilities, including sorting, searching, drag-and-drop reordering, and more. You have complete control over its appearance and behavior.
 
 ### User Model Trait
 
@@ -337,6 +342,26 @@ return [
     'select_preset' => 'Scegli un preset',
 ];
 ```
+
+## Screenshots
+
+**Table with Preset Actions**
+
+<p float="left">
+  <img src="art/table.png" width="49%" alt="Table Dark Mode" />
+  <img src="art/table-light.png" width="49%" alt="Table Light Mode" />
+</p>
+
+**Preset Management Modal**
+
+<p float="left">
+  <img src="art/modal.png" width="49%" alt="Modal Dark Mode" />
+  <img src="art/modal-light.png" width="49%" alt="Modal Light Mode" />
+</p>
+
+**Drag and Drop Reordering**
+
+![Drag and Drop](art/drag-n-drop.png)
 
 ## Testing
 
