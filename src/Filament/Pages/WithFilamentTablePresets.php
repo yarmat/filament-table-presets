@@ -36,6 +36,7 @@ trait WithFilamentTablePresets
         foreach ($visiblePresets as $preset) {
             $actions[] = Action::make($preset->getKey())
                 ->label($preset->name)
+                ->tooltip($preset->description)
                 ->color(function (HasFilamentTablePresets $livewire) use ($preset) {
                     $activePreset = $livewire->getSelectedFilamentTablePreset();
 

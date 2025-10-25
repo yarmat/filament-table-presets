@@ -26,6 +26,7 @@ class FilamentTablePreset extends Model
 {
     protected $fillable = [
         'name',
+        'description',
         'panel',
         'resource_class',
     ];

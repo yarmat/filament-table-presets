@@ -7,6 +7,31 @@
 
 A powerful Filament plugin that allows users to save, manage, and share table configurations including filters, sorting, search queries, and visible columns. Perfect for teams that need to maintain multiple views of their data.
 
+![Demo](art/intro.gif)
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+  - [Custom Theme Setup](#custom-theme-setup)
+  - [Panel Registration](#panel-registration)
+  - [Polymorphic User Relationships](#polymorphic-user-relationships)
+  - [Custom Modal Table](#custom-modal-table)
+  - [User Model Trait](#user-model-trait)
+- [Usage](#usage)
+  - [Basic Setup](#basic-setup)
+  - [Auto-Reset Active Preset](#auto-reset-active-preset)
+  - [Working with Presets](#working-with-presets)
+- [Preset Management](#preset-management)
+- [Authorization](#authorization)
+- [Database Structure](#database-structure)
+- [Translations](#translations)
+- [Testing](#testing)
+- [Security Vulnerabilities](#security-vulnerabilities)
+- [Credits](#credits)
+- [License](#license)
+
 ## Features
 
 - 💾 **Save Table States** - Preserve filters, sorting, search, and column visibility
@@ -27,11 +52,10 @@ Install the package via Composer:
 composer require ymsoft/filament-table-presets
 ```
 
-Publish and run the migrations:
+Use the installation command to publish and run migrations automatically:
 
 ```bash
-php artisan vendor:publish --tag="filament-table-presets-migrations"
-php artisan migrate
+php artisan filament-table-presets:install
 ```
 
 Optionally, publish the config file:
@@ -47,6 +71,26 @@ php artisan vendor:publish --tag="filament-table-presets-views"
 ```
 
 ## Configuration
+
+### Custom Theme Setup
+
+To ensure proper styling, you need to use a custom theme and include the plugin's CSS:
+
+**Step 1:** Make sure you have a custom theme configured in your Filament panel.
+
+**Step 2:** Add the plugin's CSS import to your theme file (e.g., `resources/css/filament/admin/theme.css`):
+
+```css
+@import '../../../../vendor/ymsoft/filament-table-presets/resources/css/styles.css';
+```
+
+**Step 3:** Recompile your theme:
+
+```bash
+npm run build
+```
+
+> **Note:** Make sure the vendor folder for this plugin is published so that it includes the Tailwind CSS classes.
 
 ### Panel Registration
 

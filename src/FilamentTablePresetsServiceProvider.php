@@ -3,6 +3,7 @@
 namespace Ymsoft\FilamentTablePresets;
 
 use Livewire\Livewire;
+use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Ymsoft\FilamentTablePresets\Livewire\FilamentTablePresets;
@@ -21,7 +22,14 @@ class FilamentTablePresetsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasTranslations()
             ->hasConfigFile()
-            ->hasMigration('create_filament_table_presets_table');
+            ->hasMigration('create_filament_table_presets_table')
+            ->hasInstallCommand(function (InstallCommand $command) {
+                $command
+                    ->publishConfigFile()
+                    ->publishMigrations()
+                    ->askToRunMigrations()
+                    ->askToStarRepoOnGitHub('yarmat/filament-table-presets');
+            });
     }
 
     public function bootingPackage(): void

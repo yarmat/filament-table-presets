@@ -17,4 +17,6 @@ return [
     'public' => 'Public',
     'visible' => 'Visible',
     'default' => 'Default',
+    'active_preset_cannot_be_deleted' => 'The active preset cannot be deleted',
+    'active_preset_cannot_be_detached' => 'The active preset cannot be detached',
 ];
