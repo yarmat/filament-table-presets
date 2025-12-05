@@ -38,7 +38,9 @@ class FilamentTablePresets extends Component implements HasActions, HasForms, Ha
                     ->filamentTablePresets()
                     ->orderByPivot('sort')
                     ->where('resource_class', $this->resourceClass);
-            });
+            })
+            ->modelLabel(__('filament-table-presets::table-preset.table_label'))
+            ->pluralModelLabel(__('filament-table-presets::table-preset.table_plural_label'));
     }
 
     /**

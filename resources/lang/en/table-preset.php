@@ -19,4 +19,6 @@ return [
     'default' => 'Default',
     'active_preset_cannot_be_deleted' => 'The active preset cannot be deleted',
     'active_preset_cannot_be_detached' => 'The active preset cannot be detached',
+    'table_label' => 'preset',
+    'table_plural_label' => 'presets',
 ];
