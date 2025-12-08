@@ -65,7 +65,7 @@ trait WithFilamentTablePresets
 
         $this->tableSort = $preset?->sort;
         $this->tableSearch = $preset?->search;
-        $this->tableFilters = $preset?->filters;
+        $this->tableFilters = $preset?->filters ?? [];
         $this->tableColumns = $preset?->columns ?? [];
 
         $this->bootedInteractsWithTable();
