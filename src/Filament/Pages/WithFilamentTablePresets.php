@@ -56,7 +56,7 @@ trait WithFilamentTablePresets
 
     public function getResourceClassName(): string
     {
-        return self::class;
+        return static::class;
     }
 
     public function applyFilamentTablePreset(?FilamentTablePreset $preset = null): void
