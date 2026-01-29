@@ -50,7 +50,7 @@ A powerful Filament plugin that allows users to save, manage, and share table co
 Install the package via Composer:
 
 ```bash
-composer require ymsoft/filament-table-presets
+composer require ymsoft/filament-table-presets^0.1.0
 ```
 
 Use the installation command to publish and run migrations automatically:
