@@ -21,4 +21,6 @@ interface HasFilamentTablePresets
     public function handleFilamentTablePresetSynced(FilamentTablePreset $preset): void;
 
     public function setTablePresetValues(FilamentTablePreset $preset): void;
+
+    public function dispatch($event, ...$params);
 }
