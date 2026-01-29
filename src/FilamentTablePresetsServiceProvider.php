@@ -34,6 +34,6 @@ class FilamentTablePresetsServiceProvider extends PackageServiceProvider
 
     public function bootingPackage(): void
     {
-        Livewire::component('filament-table-presets::livewire.filament-table-presets', FilamentTablePresets::class);
+        Livewire::component('filament-table-presets', FilamentTablePresets::class);
     }
 }

@@ -12,6 +12,7 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Throwable;
 use Ymsoft\FilamentTablePresets\FilamentTablePresetPlugin;
@@ -57,6 +58,12 @@ class FilamentTablePresets extends Component implements HasActions, HasForms, Ha
     public function isPresetSelected(FilamentTablePreset $preset): bool
     {
         return $this->selectedPreset?->getKey() === $preset->getKey();
+    }
+
+    #[On('filament-table-presets-refresh')]
+    public function refreshTablePresets(): void
+    {
+        $this->resetTable();
     }
 
     /**

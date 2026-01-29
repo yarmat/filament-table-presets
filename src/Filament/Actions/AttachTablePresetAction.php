@@ -54,6 +54,7 @@ class AttachTablePresetAction extends Action
                 }
 
                 $user->attachTablePreset($preset);
+                $livewire->dispatch('filament-table-presets-refresh')->to('filament-table-presets');
             });
     }
 }

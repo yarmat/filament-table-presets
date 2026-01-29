@@ -42,6 +42,7 @@ class CreateTablePresetAction extends Action
                 $livewire->setTablePresetValues($preset);
 
                 $user->createTablePreset($preset);
+                $livewire->dispatch('filament-table-presets-refresh')->to('filament-table-presets');
             });
     }
 }
